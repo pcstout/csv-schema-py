@@ -18,7 +18,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 |--------|--------|-----------|
 | name | string | The name of the schema. |
 | description | string | The description of the schema. |
-| filename | object | Properties for the name of the CSV filename to validate. |
+| filename | `null`, object | Properties for the name of the CSV filename to validate. |
 | columns | array | List of column definitions. |
 
 ### filename
