@@ -1,4 +1,4 @@
-# CVS Schema Definition and Validation
+# CSV Schema Definition and Validation
 
 # Definition
 
