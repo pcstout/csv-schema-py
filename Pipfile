@@ -4,8 +4,18 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pytest = "*"
+pytest-cov = "*"
+coverage = "*"
+twine = "*"
+wheel = "*"
+autopep8 = "*"
+pytest-asyncio = "*"
+pytest-mock = "*"
+pytest-pylint = "*"
 
 [packages]
+aiofiles = "*"
 
 [requires]
 python_version = "3.7"

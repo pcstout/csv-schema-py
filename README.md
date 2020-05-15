@@ -1,5 +1,11 @@
 # CVS Schema Definition and Validation
 
+## Install
+
+```bash
+pip install csv-schema
+```
+
 # Definition
 
 The CSV file schema definition will be defined in a JSON file in the following format.
@@ -37,6 +43,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 ```json
 {
   "type": "string",
+  "name": "",
   "required": true,
   "null_or_empty": false,
   "regex": null,
@@ -47,6 +54,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 |Property|Value|Description|
 |--------|--------|-----------|
 | type | `string` | The column type. |
+| name | string | The name of the column. |
 | required | `true`, `false` | Whether or not the column is required in the file. |
 | null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
 | regex | `null`, regex | Regular expression to validate the column value. |
@@ -57,6 +65,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 ```json
 {
   "type": "integer",
+  "name": "",
   "required": true,
   "null_or_empty": false,
   "regex": null,
@@ -67,6 +76,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 |Property|Value|Description|
 |--------|--------|-----------|
 | type | `integer` | The column type. |
+| name | string | The name of the column. |
 | required | `true`, `false` | Whether or not the column is required in the file. |
 | null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
 | regex | `null`, regex | Regular expression to validate the column value. |
@@ -77,6 +87,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 ```json
 {
   "type": "decimal",
+  "name": "",
   "required": true,
   "null_or_empty": false,
   "regex": null,
@@ -88,6 +99,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 |Property|Value|Description|
 |--------|--------|-----------|
 | type | `decimal` | The column type. |
+| name | string | The name of the column. |
 | required | `true`, `false` | Whether or not the column is required in the file. |
 | null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
 | regex | `null`, regex | Regular expression to validate the column value. |
@@ -99,6 +111,7 @@ The CSV file schema definition will be defined in a JSON file in the following f
 ```json
 {
   "type": "enum",
+  "name": "",
   "required": true,
   "null_or_empty": false,
   "values": ["A", "B", "C"]
@@ -107,6 +120,23 @@ The CSV file schema definition will be defined in a JSON file in the following f
 |Property|Value|Description|
 |--------|--------|-----------|
 | type | `enum` | The column type. |
+| name | string | The name of the column. |
 | required | `true`, `false` | Whether or not the column is required in the file. |
 | null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
 | values | array | Fixed set of constants. |
+
+## Development Setup
+
+```bash
+pipenv --three
+pipenv shell
+make pip_install
+make build
+make install_local
+```
+See [Makefile](Makefile) for all commands.
+
+### Testing
+
+- Create and activate a virtual environment:
+- Run the tests: `make test`

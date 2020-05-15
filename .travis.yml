@@ -1,0 +1,27 @@
+sudo: false
+language: python
+matrix:
+  include:
+    - os: linux
+      python: 3.7
+    - os: osx
+      language: generic
+      env: PYENV_VERSION=3.7.4
+install:
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] ; then brew update ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] ; then brew outdated pyenv || brew upgrade pyenv ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] ; then pyenv install $PYENV_VERSION ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] ; then ~/.pyenv/versions/$PYENV_VERSION/bin/python -m venv .venv ; fi
+  - if [ "$TRAVIS_OS_NAME" == "osx" ] ; then source .venv/bin/activate ; fi
+  - python --version
+  - python -m pip install -U pip
+  - python -m pip install -U pipenv
+  - pipenv install --dev
+  - pip install coveralls
+before_script:
+  - python -m coverage erase
+script:
+  - python --version
+  - python -m pytest -v -s --cov
+after_success:
+  - python -m coveralls
