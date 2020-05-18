@@ -22,7 +22,7 @@ class DecimalColumn(BaseColumn):
             ConfigProperty('precision', precision, 'The decimal point precision.')
         )
 
-    def validate(self):
+    def on_validate(self):
         """Validates that each property has the correct value/type.
 
         Returns:

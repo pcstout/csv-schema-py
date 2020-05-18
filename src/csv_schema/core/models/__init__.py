@@ -1,4 +1,7 @@
+from .base_config_object import BaseConfigObject
 from .base_column import BaseColumn
+from .schema_config import SchemaConfig
+from .schema_config_filename import SchemaConfigFilename
 from .column_types import ColumnTypes
 from .config_property import ConfigProperty
 from .string_column import StringColumn

@@ -13,7 +13,7 @@ class EnumColumn(BaseColumn):
             ConfigProperty('values', values, 'Fixed set of constants.')
         )
 
-    def validate(self):
+    def on_validate(self):
         """Validates that each property has the correct value/type.
 
         Returns:

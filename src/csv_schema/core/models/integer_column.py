@@ -19,7 +19,7 @@ class IntegerColumn(BaseColumn):
             ConfigProperty('max', max, 'The maximum value. null for no limit.')
         )
 
-    def validate(self):
+    def on_validate(self):
         """Validates that each property has the correct value/type.
 
         Returns:
