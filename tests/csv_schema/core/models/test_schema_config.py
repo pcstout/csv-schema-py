@@ -4,30 +4,6 @@ import json
 from src.csv_schema.core.models import SchemaConfig, SchemaConfigFilename, StringColumn
 
 
-@pytest.fixture
-def config_path(mk_tempfile):
-    return mk_tempfile(suffix='.json')
-
-
-@pytest.fixture
-def empty_config(config_path):
-    return SchemaConfig(config_path)
-
-
-@pytest.fixture
-def complete_config(config_path):
-    columns = [
-        StringColumn('col1', True, False, '', 0, 255),
-        StringColumn('col2', True, False, '', 0, 255)
-    ]
-    sc = SchemaConfig(config_path,
-                      name='Complete Config',
-                      description='A Description',
-                      columns=columns)
-
-    return sc
-
-
 def test_it_has_the_properties(empty_config, config_path):
     assert empty_config.path == os.path.abspath(config_path)
 
@@ -74,16 +50,16 @@ def test_on_validate(empty_config):
     assert len(errors) == 1
 
 
-def test_save(complete_config):
-    assert complete_config.save() == complete_config
+def test_save(populated_config):
+    assert populated_config.save() == populated_config
 
-    with open(complete_config.path) as f:
+    with open(populated_config.path) as f:
         json_data = json.load(f)
-    assert complete_config.to_dict() == json_data
+    assert populated_config.to_dict() == json_data
 
 
-def test_load(complete_config):
-    complete_config.save()
-    new_config = SchemaConfig(complete_config.path).load()
-    assert new_config.to_dict() == complete_config.to_dict()
-    assert new_config.to_json() == complete_config.to_json()
+def test_load(populated_config):
+    populated_config.save()
+    new_config = SchemaConfig(populated_config.path).load()
+    assert new_config.to_dict() == populated_config.to_dict()
+    assert new_config.to_json() == populated_config.to_json()

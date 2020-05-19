@@ -1,4 +1,6 @@
+import sys
 from .validate_config import ValidateConfig
+from ...core import ExitCodes
 
 
 def create(subparsers, parents):
@@ -10,4 +12,9 @@ def create(subparsers, parents):
 
 
 def execute(args):
-    ValidateConfig(args.schema).execute()
+    vc = ValidateConfig(args.schema)
+    vc.execute()
+    if len(vc.errors) > 0:
+        sys.exit(ExitCodes.FAIL)
+    else:
+        sys.exit(ExitCodes.SUCCESS)

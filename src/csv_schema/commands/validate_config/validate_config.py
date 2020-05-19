@@ -1,15 +1,24 @@
-import os
-import json
-from ...core import Utils, AioManager
+from ...core import Utils
+from ...core.models import SchemaConfig
 
 
 class ValidateConfig:
     def __init__(self, schema_filename):
         self.filename = Utils.expand_path(schema_filename)
+        self.errors = []
 
     def execute(self):
-        return AioManager.start(self._execute_async)
+        """Execute the validation.
 
-    async def _execute_async(self):
-        # TODO:
-        return self
+        Returns:
+            List of errors or empty list.
+        """
+        config = SchemaConfig(self.filename).load()
+        self.errors = config.validate()
+        if self.errors:
+            print('Errors found in: {0}'.format(self.filename))
+            for error in self.errors:
+                print(error)
+        else:
+            print('No errors found in: {0}'.format(self.filename))
+        return self.errors

@@ -1,5 +1,7 @@
 import os
 import json
+import aiofiles
+from ..aio_manager import AioManager
 from ..utils import Utils
 from .base_config_object import BaseConfigObject
 from .config_property import ConfigProperty
@@ -35,9 +37,13 @@ class SchemaConfig(BaseConfigObject):
         if not os.path.isfile(self.path):
             raise FileNotFoundError(self.path)
 
-        with open(self.path) as f:
-            self.from_json(json.load(f))
+        self.from_json(AioManager.start(self._load_async))
         return self
+
+    async def _load_async(self):
+        async with aiofiles.open(self.path, mode='r') as f:
+            data = await f.read()
+            return json.loads(data)
 
     def save(self):
         """Saves self as JSON to self.path.
@@ -45,9 +51,16 @@ class SchemaConfig(BaseConfigObject):
         Returns:
             Self
         """
-        with open(self.path, 'w') as f:
-            json.dump(self.to_dict(), f, indent=2)
+        AioManager.start(self._save_async)
+        # with open(self.path, 'w') as f:
+        #     json.dump(self.to_dict(), f, indent=2)
         return self
+
+    async def _save_async(self):
+        async with aiofiles.open(self.path, mode='w') as f:
+            # NOTE: json.dump is not working with aiofiles so do it this way.
+            json_data = json.dumps(self.to_dict(), indent=2)
+            await f.write(json_data)
 
     def on_validate(self):
         """Validates that each property has the correct value/type.

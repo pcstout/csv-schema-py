@@ -1,4 +1,6 @@
+import sys
 import argparse
+from .core import ExitCodes
 from .commands.validate_config import cli as validate_config_cli
 from .commands.validate_csv import cli as validate_csv_cli
 
@@ -19,3 +21,4 @@ def main(args=None):
         cmd_args._execute(cmd_args)
     else:
         main_parser.print_help()
+        sys.exit(ExitCodes.FAIL)
