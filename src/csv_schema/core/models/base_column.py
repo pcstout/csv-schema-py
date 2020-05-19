@@ -1,5 +1,3 @@
-import os
-import json
 from .base_config_object import BaseConfigObject
 from .column_types import ColumnTypes
 from .config_property import ConfigProperty
@@ -29,7 +27,7 @@ class BaseColumn(BaseConfigObject):
         Returns:
             List of error messages or an empty list.
         """
-        errors = super(BaseColumn, self).validate()
+        errors = super(BaseColumn, self).on_validate()
 
         if self.type.value not in ColumnTypes.ALL:
             errors.append('"type" must be one of: {0}'.format(','.join(ColumnTypes.ALL)))

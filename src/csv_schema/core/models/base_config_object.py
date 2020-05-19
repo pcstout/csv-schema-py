@@ -37,8 +37,15 @@ class BaseConfigObject(object):
         for prop in self.properties:
             if isinstance(prop.value, BaseConfigObject):
                 child_errors = prop.value.validate()
-                if child_errors:
-                    errors += child_errors
+                for child_error in child_errors:
+                    errors.append('"{0}" -> {1}'.format(prop.name, child_error))
+            elif isinstance(prop.value, list):
+                for item in prop.value:
+                    if isinstance(item, BaseConfigObject):
+                        item_errors = item.validate()
+                        for item_error in item_errors:
+                            errors.append('"{0}" -> {1}'.format(prop.name, item_error))
+
         return errors
 
     def on_validate(self):
@@ -68,6 +75,13 @@ class BaseConfigObject(object):
         for prop in self.properties:
             if isinstance(prop.value, BaseConfigObject):
                 result[prop.name] = prop.value.to_dict()
+            elif isinstance(prop.value, list):
+                result[prop.name] = []
+                for item in prop.value:
+                    if isinstance(item, BaseConfigObject):
+                        result[prop.name].append(item.to_dict())
+                    else:
+                        result[prop.name].append(item)
             else:
                 result[prop.name] = prop.value
 

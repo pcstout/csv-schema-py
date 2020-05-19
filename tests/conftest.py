@@ -2,6 +2,7 @@ import pytest
 import os
 import shutil
 import tempfile
+import uuid
 
 
 @pytest.fixture()
@@ -21,11 +22,11 @@ def mk_tempdir():
 
 
 @pytest.fixture()
-def mk_tempfile(mk_tempdir, syn_test_helper):
+def mk_tempfile(mk_tempdir):
     temp_dir = mk_tempdir()
 
-    def _mk(content=syn_test_helper.uniq_name()):
-        fd, tmp_filename = tempfile.mkstemp(dir=temp_dir)
+    def _mk(content=uuid.uuid4().hex, suffix=None):
+        fd, tmp_filename = tempfile.mkstemp(dir=temp_dir, suffix=suffix)
         with os.fdopen(fd, 'w') as tmp:
             tmp.write(content)
         return tmp_filename

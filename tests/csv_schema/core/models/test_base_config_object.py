@@ -30,6 +30,8 @@ class TestConfig(BaseConfigObject):
         self.prop_a = self.register_property(ConfigProperty('prop_a'))
         self.prop_b = self.register_property(ConfigProperty('prop_b'))
         self.prop_c = self.register_property(ConfigProperty('prop_c', default=TestConfigChild))
+        self.prop_d = self.register_property(ConfigProperty('prop_d', default=[]))
+        self.prop_d.value.append(TestConfigChild())
 
     def on_validate(self):
         errors = []
@@ -138,7 +140,7 @@ def test_validate(test_config):
     errors = test_config.validate()
     assert len(errors) == 2
     assert errors[0] == 'prop_a value should be: "prop_a"'
-    assert errors[1] == 'prop_cca value should be: "prop_cca"'
+    assert errors[1] == '"prop_c" -> "prop_cb" -> prop_cca value should be: "prop_cca"'
     test_config.prop_a.value = 'prop_a'
     test_config.prop_c.value.prop_cb.value.prop_cca.value = 'prop_cca'
     errors = test_config.validate()
