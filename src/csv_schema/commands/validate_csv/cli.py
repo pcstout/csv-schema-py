@@ -1,4 +1,6 @@
+import sys
 from .validate_csv import ValidateCsv
+from ...core import ExitCodes
 
 
 def create(subparsers, parents):
@@ -11,4 +13,9 @@ def create(subparsers, parents):
 
 
 def execute(args):
-    ValidateCsv(args.csv, args.schema).execute()
+    vc = ValidateCsv(args.csv, args.schema)
+    vc.execute()
+    if len(vc.errors) > 0:
+        sys.exit(ExitCodes.FAIL)
+    else:
+        sys.exit(ExitCodes.SUCCESS)

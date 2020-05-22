@@ -12,6 +12,45 @@ def config_path(mk_tempfile):
 
 
 @pytest.fixture
+def mk_valid_csv(mk_tempdir):
+    def _mk(filename='test.csv'):
+        tmpdir = mk_tempdir()
+        path = os.path.join(tmpdir, filename)
+
+        lines = ['col1,col2,col3']
+        lines.append('a1,b1,c1')
+        lines.append('a2,b2,c2')
+        lines.append('a3,b3,c3')
+
+        with open(path, mode='w') as f:
+            f.writelines(lines)
+
+        return path
+
+    yield _mk
+
+
+@pytest.fixture
+def valid_csv_path(mk_valid_csv):
+    return mk_valid_csv()
+
+
+@pytest.fixture
+def invalid_csv_path(mk_tempfile):
+    path = mk_tempfile(suffix='.csv')
+
+    lines = ['col1,col2,colX']
+    lines.append('a1,b1,c1')
+    lines.append('a2,b2,c2')
+    lines.append('a3,b3,')
+
+    with open(path, mode='w') as f:
+        f.writelines(lines)
+
+    return path
+
+
+@pytest.fixture
 def valid_config_path(populated_config):
     assert populated_config.is_valid() is True
     populated_config.save()
@@ -42,6 +81,7 @@ def populated_config(config_path):
                           name='Populated Config',
                           description='A Description',
                           columns=columns)
+    config.save()
     return config
 
 
