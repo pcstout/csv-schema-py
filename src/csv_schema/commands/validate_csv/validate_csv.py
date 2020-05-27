@@ -1,5 +1,6 @@
 import os
 import re
+import csv
 from ...core import Utils
 from ..validate_config import ValidateConfig
 
@@ -23,6 +24,9 @@ class ValidateCsv:
     def _validate_csv(self):
         if not self._validate_filename():
             return
+        if not self._validate_columns():
+            return
+        self._validate_data()
 
     def _validate_filename(self):
         filename = self.config.filename.value
@@ -38,3 +42,28 @@ class ValidateCsv:
             return is_valid
         else:
             return True
+
+    def _validate_columns(self):
+        with open(self.csv_path, 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            headers = reader.fieldnames
+            for column in self.config.columns.value:
+                if column.required.value is True and column.name.value not in headers:
+                    self.errors.append('Required column: "{0}" not found.'.format(column.name.value))
+        return len(self.errors) == 0
+
+    def _validate_data(self):
+        with open(self.csv_path, 'r') as csv_file:
+            reader = csv.DictReader(csv_file)
+            row_number = 0
+            for row in reader:
+                if row_number == 0:
+                    # Header row
+                    pass
+                else:
+                    for column in self.config.columns.value:
+                        col_value = row[column.name.value]
+                        errors = column.validate_value(row_number, col_value)
+                        if errors:
+                            self.errors += errors
+                row_number += 1

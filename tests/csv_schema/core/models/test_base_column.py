@@ -66,3 +66,28 @@ def test_to_json(col):
 def test_to_md_help(col_type, col_name, col_required, col_null_or_empty, col):
     # TODO: How to test this?
     print(col.to_md_help())
+
+
+def test_validate_value_null_or_empty():
+    col = BaseColumn(name='col1', null_or_empty=False)
+    errors = col.validate_value(1, None)
+    assert errors
+    assert 'cannot be null or empty' in errors[0]
+
+    errors = col.validate_value(1, '')
+    assert errors
+    assert 'cannot be null or empty' in errors[0]
+
+    errors = col.validate_value(1, '  ')
+    assert errors
+    assert 'cannot be null or empty' in errors[0]
+
+    col = BaseColumn(name='col1', null_or_empty=True)
+    errors = col.validate_value(1, None)
+    assert not errors
+
+    errors = col.validate_value(1, '')
+    assert not errors
+
+    errors = col.validate_value(1, '  ')
+    assert not errors

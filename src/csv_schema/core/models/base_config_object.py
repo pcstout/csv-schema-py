@@ -1,5 +1,6 @@
 import os
 import json
+from .column_types import ColumnTypes
 
 
 class BaseConfigObject(object):
@@ -107,6 +108,17 @@ class BaseConfigObject(object):
 
             if isinstance(prop.value, BaseConfigObject):
                 prop.value.from_json(json_value)
+            elif isinstance(prop.value, list) and isinstance(json_value, list):
+                prop.clear()
+                for item in json_value:
+                    # List items can only be of a certain type, figure out which one it is.
+                    # Only Columns are supported right now.
+                    if 'type' in item and 'name' in item and 'required' in item and 'null_or_empty' in item:
+                        list_item = ColumnTypes.get_instance(item['type'])
+                        list_item.from_json(item)
+                        prop.value.append(list_item)
+                    else:
+                        prop.value.append(item)
             else:
                 setattr(prop, 'value', json_value)
         return self

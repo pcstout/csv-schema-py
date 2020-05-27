@@ -6,7 +6,7 @@ from .config_property import ConfigProperty
 class IntegerColumn(BaseColumn):
     COLUMN_TYPE = ColumnTypes.INTEGER
 
-    def __init__(self, name, required=True, null_or_empty=False, regex=None, min=None, max=None):
+    def __init__(self, name=None, required=True, null_or_empty=False, regex=None, min=None, max=None):
         super(IntegerColumn, self).__init__(self.COLUMN_TYPE, name, required, null_or_empty)
 
         self.regex = self.register_property(
@@ -35,5 +35,10 @@ class IntegerColumn(BaseColumn):
 
         if self.max.value is not None and not isinstance(self.max.value, int):
             errors.append('"max" must be an integer.')
+
+        return errors
+
+    def on_validate_value(self, row_number, value):
+        errors = []
 
         return errors

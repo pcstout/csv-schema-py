@@ -1,3 +1,4 @@
+import re
 from .base_column import BaseColumn
 from .column_types import ColumnTypes
 from .config_property import ConfigProperty
@@ -6,7 +7,7 @@ from .config_property import ConfigProperty
 class StringColumn(BaseColumn):
     COLUMN_TYPE = ColumnTypes.STRING
 
-    def __init__(self, name, required=True, null_or_empty=False, regex=None, min=None, max=None):
+    def __init__(self, name=None, required=True, null_or_empty=False, regex=None, min=None, max=None):
         super(StringColumn, self).__init__(self.COLUMN_TYPE, name, required, null_or_empty)
 
         self.regex = self.register_property(
@@ -30,10 +31,60 @@ class StringColumn(BaseColumn):
         if self.regex.value is not None and not isinstance(self.regex.value, str):
             errors.append('"regex" must be a string.')
 
-        if self.min.value is not None and not isinstance(self.min.value, int):
+        min_set = self.min.value is not None
+        min_is_int = isinstance(self.min.value, int)
+        if min_set and not min_is_int:
             errors.append('"min" must be an integer.')
 
-        if self.max.value is not None and not isinstance(self.max.value, int):
+        max_set = self.max.value is not None
+        max_is_int = isinstance(self.max.value, int)
+        if max_set and not max_is_int:
             errors.append('"max" must be an integer.')
+
+        if min_is_int and max_is_int:
+            if self.min.value > self.max.value:
+                errors.append('"min" must be less than or equal to "max".')
+            if self.max.value < self.min.value:
+                errors.append('"max" must be greater than or equal to "min".')
+
+        return errors
+
+    def on_validate_value(self, row_number, value):
+        errors = []
+
+        if value is not None and not isinstance(value, str):
+            errors.append(
+                'Row number: {0}, column: "{1}", value: "{2}" must be a string.'.format(
+                    row_number,
+                    self.name.value,
+                    value)
+            )
+
+        if self.regex.value and not re.search(self.regex.value, value) is not None:
+            errors.append(
+                'Row number: {0}, column: "{1}", value: "{2}" does not match regex: "{3}".'.format(
+                    row_number,
+                    self.name.value,
+                    value,
+                    self.regex.value)
+            )
+
+        if self.min.value is not None and len(value) < self.min.value:
+            errors.append(
+                'Row number: {0}, column: "{1}", value: "{2}" must be greater than or equal to: "{3}".'.format(
+                    row_number,
+                    self.name.value,
+                    value,
+                    self.min.value)
+            )
+
+        if self.max.value is not None and len(value) > self.max.value:
+            errors.append(
+                'Row number: {0}, column: "{1}", value: "{2}" must be less than or equal to: "{3}".'.format(
+                    row_number,
+                    self.name.value,
+                    value,
+                    self.max.value)
+            )
 
         return errors

@@ -6,7 +6,7 @@ from .config_property import ConfigProperty
 class EnumColumn(BaseColumn):
     COLUMN_TYPE = ColumnTypes.ENUM
 
-    def __init__(self, name, required=True, null_or_empty=False, values=[]):
+    def __init__(self, name=None, required=True, null_or_empty=False, values=[]):
         super(EnumColumn, self).__init__(self.COLUMN_TYPE, name, required, null_or_empty)
 
         self.values = self.register_property(
@@ -26,5 +26,10 @@ class EnumColumn(BaseColumn):
 
         if not isinstance(self.values.value, list):
             errors.append('"values" must be a list.')
+
+        return errors
+
+    def on_validate_value(self, row_number, value):
+        errors = []
 
         return errors

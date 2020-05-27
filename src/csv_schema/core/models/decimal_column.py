@@ -6,7 +6,7 @@ from .config_property import ConfigProperty
 class DecimalColumn(BaseColumn):
     COLUMN_TYPE = ColumnTypes.DECIMAL
 
-    def __init__(self, name, required=True, null_or_empty=False, regex=None, min=None, max=None, precision=2):
+    def __init__(self, name=None, required=True, null_or_empty=False, regex=None, min=None, max=None, precision=2):
         super(DecimalColumn, self).__init__(self.COLUMN_TYPE, name, required, null_or_empty)
 
         self.regex = self.register_property(
@@ -41,5 +41,10 @@ class DecimalColumn(BaseColumn):
 
         if self.precision.value is not None and not isinstance(self.precision.value, int):
             errors.append('"precision" must be an integer.')
+
+        return errors
+
+    def on_validate_value(self, row_number, value):
+        errors = []
 
         return errors

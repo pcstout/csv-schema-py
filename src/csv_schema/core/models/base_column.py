@@ -4,7 +4,7 @@ from .config_property import ConfigProperty
 
 
 class BaseColumn(BaseConfigObject):
-    def __init__(self, type, name, required, null_or_empty):
+    def __init__(self, type=None, name=None, required=None, null_or_empty=None):
         super(BaseColumn, self).__init__()
 
         self.type = self.register_property(
@@ -42,3 +42,33 @@ class BaseColumn(BaseConfigObject):
             errors.append('"null_or_empty" must be True or False.')
 
         return errors
+
+    def validate_value(self, row_number, value):
+        """Validates the value for a column from a CSV file.
+
+        Returns:
+            List of error messages or an empty list.
+        """
+        errors = []
+
+        if self.null_or_empty.value is False:
+            if value is None or len(str(value).strip()) == 0:
+                errors.append('Row number: {0}, column: "{1}", value: "{2}" cannot be null or empty.".'.format(
+                    row_number,
+                    self.name.value,
+                    value)
+                )
+
+        sub_errors = self.on_validate_value(row_number, value)
+        if sub_errors:
+            errors += sub_errors
+
+        return errors
+
+    def on_validate_value(self, row_number, value):
+        """Override to implement value validation in sub-classes.
+
+        Returns:
+            List of error messages or an empty list.
+        """
+        return []

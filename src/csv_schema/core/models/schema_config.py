@@ -20,10 +20,10 @@ class SchemaConfig(BaseConfigObject):
         )
         self.filename = self.register_property(
             ConfigProperty('filename', SchemaConfigFilename(),
-                           'Properties for the name of the CSV filename to validate.')
+                           'Properties for the name of the CSV filename to validate.', default=SchemaConfigFilename)
         )
         self.columns = self.register_property(
-            ConfigProperty('columns', columns, 'List of column definitions.')
+            ConfigProperty('columns', columns, 'List of column definitions.', default=[])
         )
 
     def load(self):
