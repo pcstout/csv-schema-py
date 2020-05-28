@@ -46,10 +46,17 @@ class BaseColumn(BaseConfigObject):
     def validate_value(self, row_number, value):
         """Validates the value for a column from a CSV file.
 
+        Args:
+            row_number: The row number the value belongs to in the CSV file.
+            value: The column value from the CSV file. This should always be a string.
+
         Returns:
             List of error messages or an empty list.
         """
         errors = []
+
+        if not isinstance(value, str):
+            raise ValueError('value must be a string.')
 
         if self.null_or_empty.value is False:
             if value is None or len(str(value).strip()) == 0:
@@ -72,3 +79,12 @@ class BaseColumn(BaseConfigObject):
             List of error messages or an empty list.
         """
         return []
+
+    def add_value_error(self, errors, row_number, value, error):
+        errors.append(
+            'Row number: {0}, column: "{1}", value: "{2}" "{3}".'.format(
+                row_number,
+                self.name.value,
+                value,
+                error)
+        )

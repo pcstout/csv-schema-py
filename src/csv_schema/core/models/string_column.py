@@ -52,39 +52,16 @@ class StringColumn(BaseColumn):
     def on_validate_value(self, row_number, value):
         errors = []
 
-        if value is not None and not isinstance(value, str):
-            errors.append(
-                'Row number: {0}, column: "{1}", value: "{2}" must be a string.'.format(
-                    row_number,
-                    self.name.value,
-                    value)
-            )
-
         if self.regex.value and not re.search(self.regex.value, value) is not None:
-            errors.append(
-                'Row number: {0}, column: "{1}", value: "{2}" does not match regex: "{3}".'.format(
-                    row_number,
-                    self.name.value,
-                    value,
-                    self.regex.value)
-            )
+            self.add_value_error(errors, row_number, value,
+                                 'does not match regex: "{0}"'.format(self.regex.value))
 
         if self.min.value is not None and len(value) < self.min.value:
-            errors.append(
-                'Row number: {0}, column: "{1}", value: "{2}" must be greater than or equal to: "{3}".'.format(
-                    row_number,
-                    self.name.value,
-                    value,
-                    self.min.value)
-            )
+            self.add_value_error(errors, row_number, value,
+                                 'must be greater than or equal to: "{0}"'.format(self.min.value))
 
         if self.max.value is not None and len(value) > self.max.value:
-            errors.append(
-                'Row number: {0}, column: "{1}", value: "{2}" must be less than or equal to: "{3}".'.format(
-                    row_number,
-                    self.name.value,
-                    value,
-                    self.max.value)
-            )
+            self.add_value_error(errors, row_number, value,
+                                 'must be less than or equal to: "{0}"'.format(self.max.value))
 
         return errors

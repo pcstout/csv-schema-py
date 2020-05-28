@@ -68,26 +68,37 @@ def test_to_md_help(col_type, col_name, col_required, col_null_or_empty, col):
     print(col.to_md_help())
 
 
+def test_validate_value_must_be_string():
+    col = BaseColumn(name='col1')
+
+    for string_value in ['a', '1']:
+        errors = col.validate_value(1, string_value)
+        assert not errors
+
+    for non_string_value in [0, 1, 0.00, object()]:
+        with pytest.raises(ValueError) as ex:
+            col.validate_value(1, non_string_value)
+        assert str(ex.value) == 'value must be a string.'
+
+
 def test_validate_value_null_or_empty():
     col = BaseColumn(name='col1', null_or_empty=False)
-    errors = col.validate_value(1, None)
-    assert errors
-    assert 'cannot be null or empty' in errors[0]
+    empty_values = ['', '  ']
 
-    errors = col.validate_value(1, '')
-    assert errors
-    assert 'cannot be null or empty' in errors[0]
+    for empty_value in empty_values:
+        errors = col.validate_value(1, empty_value)
+        assert errors
+        assert 'cannot be null or empty' in errors[0]
 
-    errors = col.validate_value(1, '  ')
-    assert errors
-    assert 'cannot be null or empty' in errors[0]
+    col.null_or_empty.value = True
+    for empty_value in empty_values:
+        errors = col.validate_value(1, empty_value)
+        assert not errors
 
-    col = BaseColumn(name='col1', null_or_empty=True)
-    errors = col.validate_value(1, None)
-    assert not errors
 
-    errors = col.validate_value(1, '')
-    assert not errors
-
-    errors = col.validate_value(1, '  ')
-    assert not errors
+def test_add_value_error(col, col_name):
+    errors = []
+    col.add_value_error(errors, 9, 'a', 'ERROR_STR1')
+    assert errors[0] == 'Row number: 9, column: "{0}", value: "a" "ERROR_STR1".'.format(col_name)
+    col.add_value_error(errors, 9, 'a', 'ERROR_STR2')
+    assert errors[1] == 'Row number: 9, column: "{0}", value: "a" "ERROR_STR2".'.format(col_name)

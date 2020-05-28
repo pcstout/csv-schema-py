@@ -137,15 +137,16 @@ class BaseConfigObject(object):
         lines.append('| Property | Description |')
         lines.append('| -------- | ----------- |')
 
-        child_configs = []
+        child_configs = {}
 
         for prop in self.properties:
             lines.append('| {0} | {1} |'.format(prop.name, prop.description))
             if isinstance(prop.value, BaseConfigObject):
-                child_configs.append(prop.value)
+                child_configs[prop.name] = prop.value
 
-        for child in child_configs:
+        for child_name, child_value in child_configs.items():
             lines.append(os.linesep)
-            lines.append(child.to_md_help())
+            lines.append('### {0}'.format(child_name))
+            lines.append(child_value.to_md_help())
 
         return os.linesep.join(lines)

@@ -21,15 +21,24 @@ class EnumColumn(BaseColumn):
         """
         errors = super(EnumColumn, self).on_validate()
 
-        if self.values.value is None:
-            errors.append('"values" must contain at least one value.')
+        is_list = isinstance(self.values.value, list)
 
-        if not isinstance(self.values.value, list):
+        if not is_list:
             errors.append('"values" must be a list.')
+
+        if is_list and len(self.values.value) == 0:
+            errors.append('"values" must contain at least one value.')
 
         return errors
 
     def on_validate_value(self, row_number, value):
         errors = []
+
+        if (value is None or len(value.strip()) == 0) and self.null_or_empty.value is True:
+            # Null/empty values are allowed.
+            pass
+        elif value is not None and value not in self.values.value:
+            self.add_value_error(errors, row_number, value,
+                                 'must be one of: "{0}"'.format(','.join(self.values.value)))
 
         return errors

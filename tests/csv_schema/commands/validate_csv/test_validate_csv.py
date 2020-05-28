@@ -38,8 +38,13 @@ def test_it_validates_the_headers(populated_config, valid_csv_path, invalid_csv_
     assert 'Required column: "col3" not found.' in vc.errors[0]
 
 
-def test_it_validates_the_data(populated_config, mk_valid_csv):
-    csv_path = mk_valid_csv()
-    vc = ValidateCsv(csv_path, populated_config.path)
+def test_it_validates_the_data(populated_config, valid_csv_path, invalid_csv_path, mk_csv_file):
+    vc = ValidateCsv(valid_csv_path, populated_config.path)
     vc.execute()
     assert len(vc.errors) == 0
+
+    missing_col_value_csv = mk_csv_file(rows=['col1,col2,col3', 'a,b,'])
+    vc = ValidateCsv(missing_col_value_csv, populated_config.path)
+    vc.execute()
+    assert len(vc.errors) > 0
+    assert vc.errors[0] == 'Row number: 1, column: "col3", value: "" cannot be null or empty.".'

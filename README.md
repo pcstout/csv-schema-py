@@ -14,18 +14,21 @@ The CSV file schema definition will be defined in a JSON file in the following f
 
 ```json
 {
-  "name": "The Schema Name",
-  "description": "A description of the schema.",
-  "filename": null,
+  "name": null,
+  "description": null,
+  "filename": {
+    "regex": null
+  },
   "columns": []
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| name | string | The name of the schema. |
-| description | string | The description of the schema. |
-| filename | `null`, object | Properties for the name of the CSV filename to validate. |
-| columns | array | List of column definitions. |
+| Property | Description |
+| -------- | ----------- |
+| name | The name of the schema. |
+| description | The description of the schema. |
+| filename | Properties for the name of the CSV filename to validate. |
+| columns | List of column definitions. |
+
 
 ### filename
 ```json
@@ -33,97 +36,98 @@ The CSV file schema definition will be defined in a JSON file in the following f
   "regex": null
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| regex | `null`, regex | Regular expression to validate the name of the CSV file being validated. |
+| Property | Description |
+| -------- | ----------- |
+| regex | Regular expression to validate the name of the CSV file being validated. |
 
 ## Column Definitions:
 
-### String
+### string
 ```json
 {
   "type": "string",
-  "name": "",
+  "name": null,
   "required": true,
   "null_or_empty": false,
   "regex": null,
-  "min": 0,
-  "max": 999
+  "min": null,
+  "max": null
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| type | `string` | The column type. |
-| name | string | The name of the column. |
-| required | `true`, `false` | Whether or not the column is required in the file. |
-| null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
-| regex | `null`, regex | Regular expression to validate the column value. |
-| min | integer | The minimum length of the string. `null` for no limit. |
-| max | integer | The maximum length of the string. `null` for no limit. |
+| Property | Description |
+| -------- | ----------- |
+| type | The column type. |
+| name | The name of the column. |
+| required | Whether or not the column is required in the file. |
+| null_or_empty | Whether or not the value can be null (missing) or an empty string. |
+| regex | Regular expression to validate the column value. |
+| min | The minimum length of the string. null for no limit. |
+| max | The maximum length of the string. null for no limit. |
 
-### Integer
+### integer
 ```json
 {
   "type": "integer",
-  "name": "",
+  "name": null,
   "required": true,
   "null_or_empty": false,
   "regex": null,
-  "min": 0,
-  "max": 999
+  "min": null,
+  "max": null
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| type | `integer` | The column type. |
-| name | string | The name of the column. |
-| required | `true`, `false` | Whether or not the column is required in the file. |
-| null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
-| regex | `null`, regex | Regular expression to validate the column value. |
-| min | integer | The minimum value. `null` for no limit. |
-| max | integer | The maximum value. `null` for no limit. |
+| Property | Description |
+| -------- | ----------- |
+| type | The column type. |
+| name | The name of the column. |
+| required | Whether or not the column is required in the file. |
+| null_or_empty | Whether or not the value can be null (missing) or an empty string. |
+| regex | Regular expression to validate the column value. |
+| min | The minimum value. null for no limit. |
+| max | The maximum value. null for no limit. |
 
-### Decimal
+### decimal
 ```json
 {
   "type": "decimal",
-  "name": "",
+  "name": null,
   "required": true,
   "null_or_empty": false,
   "regex": null,
-  "min": 0.00,
-  "max": 999.99,
+  "min": null,
+  "max": null,
   "precision": 2
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| type | `decimal` | The column type. |
-| name | string | The name of the column. |
-| required | `true`, `false` | Whether or not the column is required in the file. |
-| null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
-| regex | `null`, regex | Regular expression to validate the column value. |
-| min | integer | The minimum value. `null` for no limit. |
-| max | integer | The maximum value. `null` for no limit. |
-| precision| integer | The decimal point precision. |
+| Property | Description |
+| -------- | ----------- |
+| type | The column type. |
+| name | The name of the column. |
+| required | Whether or not the column is required in the file. |
+| null_or_empty | Whether or not the value can be null (missing) or an empty string. |
+| regex | Regular expression to validate the column value. |
+| min | The minimum value. null for no limit. |
+| max | The maximum value. null for no limit. |
+| precision | The decimal point precision. |
 
-### Enum
+### enum
 ```json
 {
   "type": "enum",
-  "name": "",
+  "name": null,
   "required": true,
   "null_or_empty": false,
-  "values": ["A", "B", "C"]
+  "values": []
 }
 ```
-|Property|Value|Description|
-|--------|--------|-----------|
-| type | `enum` | The column type. |
-| name | string | The name of the column. |
-| required | `true`, `false` | Whether or not the column is required in the file. |
-| null_or_empty | `true`, `false` | Whether or not the value can be null (missing) or an empty string. |
-| values | array | Fixed set of constants. |
+| Property | Description |
+| -------- | ----------- |
+| type | The column type. |
+| name | The name of the column. |
+| required | Whether or not the column is required in the file. |
+| null_or_empty | Whether or not the value can be null (missing) or an empty string. |
+| values | Fixed set of constants. |
+
 
 ## Development Setup
 

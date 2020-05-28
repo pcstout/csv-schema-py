@@ -12,20 +12,27 @@ def config_path(mk_tempfile):
 
 
 @pytest.fixture
-def mk_valid_csv(mk_tempdir):
-    def _mk(filename='test.csv'):
+def mk_csv_file(mk_tempdir):
+    def _mk(filename='test.csv', rows=[]):
         tmpdir = mk_tempdir()
         path = os.path.join(tmpdir, filename)
 
-        lines = ['col1,col2,col3']
-        lines.append('a1,b1,c1')
-        lines.append('a2,b2,c2')
-        lines.append('a3,b3,c3')
-
         with open(path, mode='w') as f:
-            f.writelines(os.linesep.join(lines))
+            f.writelines(os.linesep.join(rows))
 
         return path
+
+    yield _mk
+
+
+@pytest.fixture
+def mk_valid_csv(mk_csv_file):
+    def _mk(filename='test.csv'):
+        rows = ['col1,col2,col3']
+        rows.append('a1,b1,1')
+        rows.append('a2,b2,2')
+        rows.append('a3,b3,3')
+        return mk_csv_file(filename=filename, rows=rows)
 
     yield _mk
 
@@ -41,20 +48,13 @@ def invalid_csv_path(mk_invalid_csv):
 
 
 @pytest.fixture
-def mk_invalid_csv(mk_tempfile, mk_tempdir):
+def mk_invalid_csv(mk_csv_file):
     def _mk(filename='test.csv'):
-        tmpdir = mk_tempdir()
-        path = os.path.join(tmpdir, filename)
-
-        lines = ['col1,col2,colX']
-        lines.append('a1,b1,c1')
-        lines.append('a2,b2,c2')
-        lines.append('a3,b3,')
-
-        with open(path, mode='w') as f:
-            f.writelines(os.linesep.join(lines))
-
-        return path
+        rows = ['col1,col2,col3WRONG']
+        rows.append('a1,b1,1')
+        rows.append('a2,b2,2')
+        rows.append('a3,b3,3')
+        return mk_csv_file(filename=filename, rows=rows)
 
     yield _mk
 

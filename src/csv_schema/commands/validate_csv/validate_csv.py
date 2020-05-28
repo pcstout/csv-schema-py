@@ -55,15 +55,11 @@ class ValidateCsv:
     def _validate_data(self):
         with open(self.csv_path, 'r') as csv_file:
             reader = csv.DictReader(csv_file)
-            row_number = 0
+            row_number = 1
             for row in reader:
-                if row_number == 0:
-                    # Header row
-                    pass
-                else:
-                    for column in self.config.columns.value:
-                        col_value = row[column.name.value]
-                        errors = column.validate_value(row_number, col_value)
-                        if errors:
-                            self.errors += errors
+                for column in self.config.columns.value:
+                    col_value = row[column.name.value]
+                    errors = column.validate_value(row_number, col_value)
+                    if errors:
+                        self.errors += errors
                 row_number += 1
