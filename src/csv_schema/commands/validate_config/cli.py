@@ -15,6 +15,10 @@ def execute(args):
     vc = ValidateConfig(args.schema)
     vc.execute()
     if len(vc.errors) > 0:
+        print('Errors found in: {0}'.format(vc.filename))
+        for error in vc.errors:
+            print(error)
         sys.exit(ExitCodes.FAIL)
     else:
+        print('No errors found in: {0}'.format(vc.filename))
         sys.exit(ExitCodes.SUCCESS)

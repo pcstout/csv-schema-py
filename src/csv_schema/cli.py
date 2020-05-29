@@ -3,8 +3,9 @@ import argparse
 from .core import ExitCodes
 from .commands.validate_config import cli as validate_config_cli
 from .commands.validate_csv import cli as validate_csv_cli
+from .commands.generate_config import cli as generate_config_cli
 
-ALL_ACTIONS = [validate_config_cli, validate_csv_cli]
+ALL_ACTIONS = [validate_config_cli, validate_csv_cli, generate_config_cli]
 
 
 def main(args=None):

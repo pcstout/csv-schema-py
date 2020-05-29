@@ -63,3 +63,4 @@ class ValidateCsv:
                     if errors:
                         self.errors += errors
                 row_number += 1
+        return len(self.errors) == 0

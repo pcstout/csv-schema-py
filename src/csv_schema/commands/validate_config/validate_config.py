@@ -16,10 +16,4 @@ class ValidateConfig:
         """
         self.config = SchemaConfig(self.filename).load()
         self.errors = self.config.validate()
-        if self.errors:
-            print('Errors found in: {0}'.format(self.filename))
-            for error in self.errors:
-                print(error)
-        else:
-            print('No errors found in: {0}'.format(self.filename))
         return self.errors

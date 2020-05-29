@@ -8,7 +8,7 @@ from .schema_config_filename import SchemaConfigFilename
 
 class SchemaConfig(BaseConfigObject):
 
-    def __init__(self, path, name=None, description=None, columns=[]):
+    def __init__(self, path, name=None, description=None, columns=ConfigProperty.NotSpecified()):
         super(SchemaConfig, self).__init__()
 
         self.path = Utils.expand_path(path)
@@ -23,7 +23,7 @@ class SchemaConfig(BaseConfigObject):
                            'Properties for the name of the CSV filename to validate.', default=SchemaConfigFilename)
         )
         self.columns = self.register_property(
-            ConfigProperty('columns', columns, 'List of column definitions.', default=[])
+            ConfigProperty('columns', columns, 'List of column definitions.', default=list)
         )
 
     def load(self):

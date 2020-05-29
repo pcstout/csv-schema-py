@@ -30,7 +30,7 @@ class TestConfig(BaseConfigObject):
         self.prop_a = self.register_property(ConfigProperty('prop_a'))
         self.prop_b = self.register_property(ConfigProperty('prop_b'))
         self.prop_c = self.register_property(ConfigProperty('prop_c', default=TestConfigChild))
-        self.prop_d = self.register_property(ConfigProperty('prop_d', default=[]))
+        self.prop_d = self.register_property(ConfigProperty('prop_d', default=list))
         self.prop_d.value.append(TestConfigChild())
 
     def on_validate(self):
@@ -55,6 +55,9 @@ def assert_are_default(props):
         if isinstance(prop.value, BaseConfigObject):
             assert isinstance(prop.value, prop.default)
             assert_are_default(prop.value.properties)
+        elif isinstance(prop.default, type):
+            assert prop.value != prop.default
+            assert isinstance(prop.value, prop.default)
         else:
             assert prop.value == prop.default
 

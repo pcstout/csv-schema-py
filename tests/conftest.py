@@ -13,7 +13,7 @@ def config_path(mk_tempfile):
 
 @pytest.fixture
 def mk_csv_file(mk_tempdir):
-    def _mk(filename='test.csv', rows=[]):
+    def _mk(filename='test.csv', rows=None):
         tmpdir = mk_tempdir()
         path = os.path.join(tmpdir, filename)
 

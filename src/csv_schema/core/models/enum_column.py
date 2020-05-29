@@ -6,11 +6,11 @@ from .config_property import ConfigProperty
 class EnumColumn(BaseColumn):
     COLUMN_TYPE = ColumnTypes.ENUM
 
-    def __init__(self, name=None, required=True, null_or_empty=False, values=[]):
+    def __init__(self, name=None, required=True, null_or_empty=False, values=ConfigProperty.NotSpecified()):
         super(EnumColumn, self).__init__(self.COLUMN_TYPE, name, required, null_or_empty)
 
         self.values = self.register_property(
-            ConfigProperty('values', values, 'Fixed set of constants.')
+            ConfigProperty('values', values, 'Fixed set of constants.', default=list)
         )
 
     def on_validate(self):

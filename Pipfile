@@ -10,7 +10,6 @@ coverage = "*"
 twine = "*"
 wheel = "*"
 autopep8 = "*"
-pytest-asyncio = "*"
 pytest-mock = "*"
 pytest-pylint = "*"
 
