@@ -43,3 +43,7 @@ coverage.xml
 
 # pyenv
 .python-version
+
+# Testing files
+csv-schema.json
+csv-schema.csv
