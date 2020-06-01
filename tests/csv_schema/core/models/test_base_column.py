@@ -99,6 +99,6 @@ def test_validate_value_null_or_empty():
 def test_add_value_error(col, col_name):
     errors = []
     col.add_value_error(errors, 9, 'a', 'ERROR_STR1')
-    assert errors[0] == 'Row number: 9, column: "{0}", value: "a" "ERROR_STR1".'.format(col_name)
+    assert errors[0] == 'Row number: 9, column: "{0}", value: "a" ERROR_STR1.'.format(col_name)
     col.add_value_error(errors, 9, 'a', 'ERROR_STR2')
-    assert errors[1] == 'Row number: 9, column: "{0}", value: "a" "ERROR_STR2".'.format(col_name)
+    assert errors[1] == 'Row number: 9, column: "{0}", value: "a" ERROR_STR2.'.format(col_name)

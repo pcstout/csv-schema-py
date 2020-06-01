@@ -45,5 +45,5 @@ coverage.xml
 .python-version
 
 # Testing files
-csv-schema.json
-csv-schema.csv
+csv-schema*.json
+csv-schema*.csv

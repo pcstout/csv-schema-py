@@ -82,7 +82,7 @@ class BaseColumn(BaseConfigObject):
 
     def add_value_error(self, errors, row_number, value, error):
         errors.append(
-            'Row number: {0}, column: "{1}", value: "{2}" "{3}".'.format(
+            'Row number: {0}, column: "{1}", value: "{2}" {3}.'.format(
                 row_number,
                 self.name.value,
                 value,
