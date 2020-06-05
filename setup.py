@@ -1,11 +1,12 @@
 import setuptools
+from src.csv_schema._version import __version__
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="csv-schema",
-    version="0.0.b0",
+    version=__version__,
     author="Patrick Stout",
     author_email="pstout@prevagroup.com",
     license="Unknown",
