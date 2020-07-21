@@ -14,7 +14,7 @@ def test_it_validates_the_csv_filename(populated_config, mk_valid_csv):
     assert len(vc.errors) == 0
 
     # Correct path with regex - should pass
-    populated_config.filename.value.regex.value = '^test\.csv$'
+    populated_config.filename.value.regex.value = r'^test\.csv$'
     populated_config.save()
     vc = ValidateCsv(correct_csv_path, populated_config.path)
     vc.execute()

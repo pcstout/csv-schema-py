@@ -24,4 +24,4 @@ class ColumnTypes:
         elif type_str == cls.ENUM:
             return EnumColumn()
         else:
-            raise Exception('Invalid type: {0}'.format(type_str))
+            raise ValueError('Invalid type: {0}'.format(type_str))

@@ -13,7 +13,7 @@ setuptools.setup(
     description="CSV file validation.",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/covid-open-data/csv-schema-py",
+    url="https://github.com/pcstout/csv-schema-py",
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     classifiers=(

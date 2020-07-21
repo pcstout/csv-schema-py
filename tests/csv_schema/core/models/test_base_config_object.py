@@ -3,8 +3,8 @@ import json
 import uuid
 from src.csv_schema.core.models import BaseConfigObject, ConfigProperty
 
-
 class TestConfigChildChild(BaseConfigObject):
+    __test__ = False
     def __init__(self):
         super(TestConfigChildChild, self).__init__()
         self.prop_cca = self.register_property(ConfigProperty('prop_cca'))
@@ -18,6 +18,7 @@ class TestConfigChildChild(BaseConfigObject):
 
 
 class TestConfigChild(BaseConfigObject):
+    __test__ = False
     def __init__(self):
         super(TestConfigChild, self).__init__()
         self.prop_ca = self.register_property(ConfigProperty('prop_ca'))
@@ -25,6 +26,7 @@ class TestConfigChild(BaseConfigObject):
 
 
 class TestConfig(BaseConfigObject):
+    __test__ = False
     def __init__(self):
         super(TestConfig, self).__init__()
         self.prop_a = self.register_property(ConfigProperty('prop_a'))
