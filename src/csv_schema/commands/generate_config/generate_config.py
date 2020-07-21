@@ -51,7 +51,7 @@ class GenerateConfig:
 
     def _generate_test_csv(self):
         self.csv_path = self.config.path + '.csv'
-        with open(self.csv_path, mode='w') as f:
+        with open(self.csv_path, mode='w', newline='') as f:
             csv_writer = csv.DictWriter(f, fieldnames=[c.name.value for c in self.config.columns.value])
             csv_writer.writeheader()
             row_count = 1

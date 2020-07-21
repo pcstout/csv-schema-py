@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/pcstout/csv-schema-py.svg?branch=master)](https://travis-ci.org/pcstout/csv-schema-py)
+[![Build status](https://ci.appveyor.com/api/projects/status/0s8kitxrkb5neae8/branch/master?svg=true)](https://ci.appveyor.com/project/pcstout/csv-schema-py/branch/master)
+
 # CSV Schema Definition and Validation
 
 ## Install
