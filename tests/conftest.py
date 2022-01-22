@@ -83,7 +83,7 @@ def empty_config(config_path):
 def populated_config(config_path):
     columns = [
         StringColumn('col1'),
-        StringColumn('col2'),
+        StringColumn('col2', required=False),
         StringColumn('col3')
     ]
     config = SchemaConfig(config_path,

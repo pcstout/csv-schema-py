@@ -48,3 +48,8 @@ def test_it_validates_the_data(populated_config, valid_csv_path, invalid_csv_pat
     vc.execute()
     assert len(vc.errors) > 0
     assert vc.errors[0] == 'Row number: 1, column: "col3", value: "" cannot be null or empty.".'
+
+    missing_optional_column_csv = mk_csv_file(rows=['col1,col3', 'a,c'])
+    vc = ValidateCsv(missing_optional_column_csv, populated_config.path)
+    vc.execute()
+    assert len(vc.errors) == 0

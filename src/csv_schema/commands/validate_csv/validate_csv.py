@@ -58,9 +58,13 @@ class ValidateCsv:
             row_number = 1
             for row in reader:
                 for column in self.config.columns.value:
-                    col_value = row[column.name.value]
-                    errors = column.validate_value(row_number, col_value)
-                    if errors:
-                        self.errors += errors
+                    try:
+                        col_value = row[column.name.value]
+                        errors = column.validate_value(row_number, col_value)
+                        if errors:
+                            self.errors += errors
+                    except KeyError:
+                        if column.required.value:
+                            self.errors.append(f'Required column: "{column.name.value}" not found.')
                 row_number += 1
         return len(self.errors) == 0
