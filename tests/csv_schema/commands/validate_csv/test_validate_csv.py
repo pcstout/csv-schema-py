@@ -20,7 +20,7 @@ def test_it_validates_the_csv_filename(populated_config, mk_valid_csv):
     vc.execute()
     assert len(vc.errors) == 0
 
-    # Incorrect path with with regex - should not pass
+    # Incorrect path with regex - should not pass
     vc = ValidateCsv(incorrect_csv_path, populated_config.path)
     vc.execute()
     assert len(vc.errors) > 0
@@ -47,4 +47,11 @@ def test_it_validates_the_data(populated_config, valid_csv_path, invalid_csv_pat
     vc = ValidateCsv(missing_col_value_csv, populated_config.path)
     vc.execute()
     assert len(vc.errors) > 0
-    assert vc.errors[0] == 'Row number: 1, column: "col3", value: "" cannot be null or empty.".'
+    assert vc.errors[0] == 'Row number: 1, column: "col3", value: "" cannot be null or empty.'
+
+    missing_optional_column_csv = mk_csv_file(rows=['col2,col3', 'b,c'])
+    populated_config.columns.value[0].required.value = False
+    populated_config.save()
+    vc = ValidateCsv(missing_optional_column_csv, populated_config.path)
+    vc.execute()
+    assert len(vc.errors) == 0

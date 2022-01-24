@@ -60,7 +60,7 @@ class BaseColumn(BaseConfigObject):
 
         if self.null_or_empty.value is False:
             if value is None or len(str(value).strip()) == 0:
-                errors.append('Row number: {0}, column: "{1}", value: "{2}" cannot be null or empty.".'.format(
+                errors.append('Row number: {0}, column: "{1}", value: "{2}" cannot be null or empty.'.format(
                     row_number,
                     self.name.value,
                     value)
